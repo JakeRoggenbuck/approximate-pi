@@ -1,38 +1,31 @@
 #include <assert.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <time.h>
 
 #define SIZE 1000000
 #define DIAMETER 100
 #define RADIUS DIAMETER / 2
 
-int X[SIZE];
-int Y[SIZE];
+int calculate_single() {
+    int s;
 
-void add_nums(int *array) {
-    int random;
-
-    for (int i = 0; i < SIZE; i++) {
-        random = rand() % DIAMETER;
-        array[i] = random;
-    }
+    s = rand() % DIAMETER;
+    return pow(s, 2) + RADIUS;
 }
 
-void print_array(int *array) {
-    for (int i = 0; i < SIZE; i++) {
-        printf("%d\n", array[i]);
-    }
+int calculate_point() {
+    int x = calculate_single();
+    int y = calculate_single();
+    return x + y <= pow(DIAMETER, 2);
 }
 
 int calculate_pi() {
-    int x, y, in;
+    int in = 0;
 
     for (int i = 0; i < SIZE; i++) {
-        x = pow(X[i], 2) + RADIUS;
-        y = pow(Y[i], 2) + RADIUS;
-        if (x + y <= pow(DIAMETER, 2)) {
+        if (calculate_point()) {
             in++;
         }
     }
@@ -43,15 +36,11 @@ int calculate_pi() {
 int main() {
     srand(time(0));
 
-    add_nums(&X);
-    add_nums(&Y);
-
     int in = calculate_pi();
     double ratio = ((double)in / (double)SIZE);
-	double pi = ratio * 4;
+    double pi = ratio * 4;
 
-    printf("%d inside the circle, %d outside.\n", in, SIZE-in);
-
+    printf("%d inside the circle, %d outside.\n", in, SIZE - in);
     printf("%f\n", pi);
 
     return 0;
