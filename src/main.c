@@ -1,9 +1,10 @@
 #include <assert.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <time.h>
 
-#define SIZE 100000
+#define SIZE 1000000
 #define DIAMETER 100
 #define RADIUS DIAMETER / 2
 
@@ -29,8 +30,8 @@ int calculate_pi() {
     int x, y, in;
 
     for (int i = 0; i < SIZE; i++) {
-        x = pow(X[i], 2); /* + RADIUS; */
-        y = pow(Y[i], 2); /* + RADIUS; */
+        x = pow(X[i], 2) + RADIUS;
+        y = pow(Y[i], 2) + RADIUS;
         if (x + y <= pow(DIAMETER, 2)) {
             in++;
         }
@@ -40,18 +41,18 @@ int calculate_pi() {
 }
 
 int main() {
-    unsigned int seed;
-
-    srand(seed);
+    srand(time(0));
 
     add_nums(&X);
     add_nums(&Y);
 
     int in = calculate_pi();
-	printf("%d\n", in);
-    double pi = (double)(in / SIZE);
+    double ratio = ((double)in / (double)SIZE);
+	double pi = ratio * 4;
 
-	printf("%f\n", pi);
+    printf("%d inside the circle, %d outside.\n", in, SIZE-in);
+
+    printf("%f\n", pi);
 
     return 0;
 }
